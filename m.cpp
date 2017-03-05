@@ -4,10 +4,10 @@
 using namespace std;
 
 double f(double x){
-	return pow(x, 3) - 4 * pow(x, 2) - 10;
+	//return pow(x, 3) - 4 * pow(x, 2) - 10;
 	//return pow(M_E, -pow(x, 2) + 1) - 4 * pow(x, 3) + 25;
 	//return pow(M_E, 3 * x - 12) + x * cos(3 * x) - pow(x, 2) + 4;
-	//return pow(x, 3) + 4 * pow(x, 2) - 10;
+	return pow(x, 3) + 4 * pow(x, 2) - 10;
 }
 
 double g(double x){
@@ -26,8 +26,6 @@ void incrementalSearches(){
 	fx0 = f(x0);
 	if(fx0 == 0){
 		cout << x0 << " is a root " << endl;
-	}else if(niter == 0){
-		cout << "Cannot continue because number of iteratios is 0" << endl;
 	}else{
 		x1 = x0 + delta;
 		fx1 = f(x1);
@@ -67,8 +65,6 @@ void bisection(){
 		cout << xi << " is a root " << endl;
 	}else if (fxs == 0){
 		cout << xs << " is a root" << endl;
-	}else if (niter == 0){
-		cout << "Cannot continue because number of iteratios is 0" << endl;
 	}else if (fxi*fxs < 0){
 		xm = (xi + xs)/2;
 		fxm = f(xm);
@@ -117,8 +113,6 @@ void falseRule(){
 		cout << xi << " is a root " << endl;
 	}else if (fxs == 0){
 		cout << xs << " is a root" << endl;
-	}else if (niter == 0){
-		cout << "Cannot continue because number of iteratios is 0" << endl;
 	}else if (fxi*fxs < 0){
 		xm = xi -((fxi * (xs - xi))/(fxs -fxi));
 		fxm = f(xm);
@@ -179,7 +173,7 @@ void fixedPoint(){
 		}else if(error < tol){
 			cout << x0 << " is near the root, with tolerance = " << tol << " and error = " << error << endl;
 		}else{
-			cout << "Sorry, it failed in" << niter << "iterations" << endl;
+			cout << "Sorry, it failed in" << niter << iterations << endl;
 		}
 	}
 }
@@ -205,7 +199,7 @@ int main(){
 			case 3:
 				falseRule();
 				break;
-			case 4:
+			case 6:
 				fixedPoint();
 				break;
 			case 5:
