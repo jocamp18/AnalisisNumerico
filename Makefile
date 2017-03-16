@@ -1,7 +1,7 @@
-all: amethods
+all: implementations
 
-amethods:
-	g++ -o amethods methods.cpp
+implementations:
+	g++ -o implementations methods.cpp
 
 clean:
-	rm -f amethods
+	rm -f implementations

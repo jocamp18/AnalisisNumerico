@@ -1,5 +1,6 @@
 #include <iostream>
 #include <math.h>
+#include <iomanip>
 
 using namespace std;
 
@@ -32,13 +33,20 @@ void incrementalSearches(){
 		x1 = x0 + delta;
 		fx1 = f(x1);
 		cont = 1;
+		cout << "+------------------------------------+" << endl;
+		cout << '|'<< setw(11) << " iteration " << '|' << setw(11) << " x " << '|' << setw(11) << " f(x) " << '|' <<  endl;
+		cout << "+------------------------------------+" << endl;
 		while(fx1 * fx0 > 0 && cont < niter){
+			cout << '|'<< setw(11) << cont << '|' << setw(11) << x1 << '|' << setw(11) << fx1 <<  '|' << endl;
+			cout << "+------------------------------------+" << endl;
 			x0 = x1;
 			fx0 = fx1;
 			x1 = x0 + delta;
 			fx1 = f(x1);
 			cont++;
 		}
+		cout << '|'<< setw(11) << cont << '|' << setw(11) << x1 << '|' << setw(11) << fx1 <<  '|' << endl;
+		cout << "+------------------------------------+" << endl;
 		if(fx1 == 0){
 			cout << x1 << " is a root" << endl;
 		}else if(fx0 * fx1 < 0){
@@ -74,7 +82,12 @@ void bisection(){
 		fxm = f(xm);
 		cont = 1;
 		error = tol + 1;
+		cout << "+-----------------------------------------------------------------------------------------------------+" << endl;
+		cout << '|' << setw(11) << "iteration" << '|' << setw(11) << "xi"  << '|' << setw(13) << "f(xi)" << '|' << setw(11) << "xs"  << '|' << setw(13) << "f(xs)" << '|' << setw(11) << "xm"  << '|' << setw(13) << "f(xm)" << '|' << setw(11) << "Error" << '|' << endl;
+		cout << "+-----------------------------------------------------------------------------------------------------+" << endl;
 		while( error > tol && fxm != 0 && cont < niter){
+			cout << '|' << setw(11) << cont << '|' << setw(11) << xi  << '|' << setw(13) << fxi << '|' << setw(11) << xs  << '|' << setw(13) << fxs << '|' << setw(11) << xm  << '|' << setw(13) << fxm << '|' << setw(11) << error << '|' << endl;
+			cout << "+-----------------------------------------------------------------------------------------------------+" << endl;
 			if(fxi * fxm < 0){
 				xs = xm;
 				fxs = fxm;
@@ -88,6 +101,8 @@ void bisection(){
 			error = abs(xm - xaux);
 			cont++;
 		}
+		cout << '|' << setw(11) << cont << '|' << setw(11) << xi  << '|' << setw(13) << fxi << '|' << setw(11) << xs  << '|' << setw(13) << fxs << '|' << setw(11) << xm  << '|' << setw(13) << fxm << '|' << setw(11) << error << '|' << endl;
+        cout << "+-----------------------------------------------------------------------------------------------------+" << endl;
 		if (fxm == 0){
 			cout << xm << " is a root " << endl;
 		}else if(error < tol){
@@ -124,7 +139,12 @@ void falseRule(){
 		fxm = f(xm);
 		cont = 1;
 		error = tol + 1;
+		cout << "+------------------------------------------------------------------------------------------------------+" << endl;
+		cout << '|' << setw(11) << "iteration" << '|' << setw(11) << "xi"  << '|' << setw(13) << "f(xi)" << '|' << setw(11) << "xs"  << '|' << setw(13) << "f(xs)" << '|' << setw(11) << "xm"  << '|' << setw(13) << "f(xm)" << '|' << setw(11) << "Error" << '|' << endl;
+		cout << "+------------------------------------------------------------------------------------------------------+" << endl;
 		while( error > tol && fxm != 0 && cont < niter){
+			cout << '|' << setw(11) << cont << '|' << setw(11) << xi  << '|' << setw(13) << fxi << '|' << setw(11) << xs  << '|' << setw(13) << fxs << '|' << setw(11) << xm  << '|' << setw(13) << fxm << '|' << setw(11) << error << '|' << endl;
+			cout << "+-----------------------------------------------------------------------------------------------------+" << endl;
 			if(fxi * fxm < 0){
 				xs = xm;
 				fxs = fxm;
@@ -138,6 +158,8 @@ void falseRule(){
 			error = abs(xm - xaux);
 			cont++;
 		}
+		cout << '|' << setw(11) << cont << '|' << setw(11) << xi  << '|' << setw(13) << fxi << '|' << setw(11) << xs  << '|' << setw(13) << fxs << '|' << setw(11) << xm  << '|' << setw(13) << fxm << '|' << setw(11) << error << '|' << endl;
+        cout << "+-----------------------------------------------------------------------------------------------------+" << endl;
 		if (fxm == 0){
 			cout << xm << " is a root " << endl;
 		}else if(error < tol){
