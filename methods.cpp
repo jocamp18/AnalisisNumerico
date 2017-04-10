@@ -5,10 +5,15 @@
 using namespace std;
 
 double f(double x){
-	return pow(x, 3) - 4 * pow(x, 2) - 10;
+	return pow(M_E, -x) - x;
+	//return pow(x, 3) - 4 * pow(x, 2) - 10;
 	//return pow(M_E, -pow(x, 2) + 1) - 4 * pow(x, 3) + 25;
 	//return pow(M_E, 3 * x - 12) + x * cos(3 * x) - pow(x, 2) + 4;
 	//return pow(x, 3) + 4 * pow(x, 2) - 10;
+}
+
+double df(double x){
+	return -pow(M_E, -x) -1;
 }
 
 double g(double x){
@@ -33,12 +38,12 @@ void incrementalSearches(){
 		x1 = x0 + delta;
 		fx1 = f(x1);
 		cont = 1;
-		cout << "+------------------------------------+" << endl;
+		cout << "+-----------------------------------+" << endl;
 		cout << '|'<< setw(11) << " iteration " << '|' << setw(11) << " x " << '|' << setw(11) << " f(x) " << '|' <<  endl;
-		cout << "+------------------------------------+" << endl;
+		cout << "+-----------------------------------+" << endl;
 		while(fx1 * fx0 > 0 && cont < niter){
 			cout << '|'<< setw(11) << cont << '|' << setw(11) << x1 << '|' << setw(11) << fx1 <<  '|' << endl;
-			cout << "+------------------------------------+" << endl;
+			cout << "+-----------------------------------+" << endl;
 			x0 = x1;
 			fx0 = fx1;
 			x1 = x0 + delta;
@@ -46,7 +51,7 @@ void incrementalSearches(){
 			cont++;
 		}
 		cout << '|'<< setw(11) << cont << '|' << setw(11) << x1 << '|' << setw(11) << fx1 <<  '|' << endl;
-		cout << "+------------------------------------+" << endl;
+		cout << "+-----------------------------------+" << endl;
 		if(fx1 == 0){
 			cout << x1 << " is a root" << endl;
 		}else if(fx0 * fx1 < 0){
@@ -184,8 +189,8 @@ void fixedPoint(){
 	fx0 = f(x0);
 	if(fx0 == 0){
 		cout << x0 << " is a root" << endl;
-	}else if(niter == 0){
-		cout << "Cannot coninue because maximum number of iterations is 0" << endl;
+	}else if(niter <= 0){
+		cout << "Cannot coninue because maximum number of iterations is incorrect" << endl;
 	}else{
 		error = tol + 1;
 		cont = 0;
@@ -206,6 +211,99 @@ void fixedPoint(){
 	}
 }
 
+void newton(){
+	double x0, x1, tol, error, fx, dfx;
+	int niter, cont;
+	cout << "Enter initial value" << endl;
+	cin >> x0;
+	cout << "Enter tolerance" << endl;
+	cin >> tol;
+	cout << "Enter maximum number of iterations" << endl;
+	cin >> niter;
+	dfx = df(x0);
+	fx = f(x0);
+	if(fx == 0){
+		cout << x0 << " is a root" << endl;
+	}else if(niter <= 0){
+		cout << "Cannot continue because maximum number of iterations is incorrect" << endl;
+	}else if(tol < 0){
+		cout << "Invalid tolerance" << endl;
+	}else{
+		error = tol + 1;
+		cont = 0;
+		while(fx != 0 && error > tol && dfx != 0 && cont < niter){
+			x1 = x0 - fx/dfx;
+			cout << x1 << endl;
+			fx = f(x1);
+			dfx = df(x1);
+			error = abs(x1 - x0);
+			x0 = x1;;
+			cont++;
+		}
+		if(fx == 0){
+			cout << x0 << " is a root" << endl;
+		}else if(error < tol){
+			cout << x0 << " is near a root" << endl;
+		}else if(dfx == 0){
+			cout << x0 << " can be a multiple root" << endl;
+		}else{
+			cout << "Sorry, it failed" << endl;
+		}
+	}
+}
+
+void secant(){
+	double x0, x1, x2, tol, error, fx0, fx1, den;
+	int niter, cont;
+	cout << "Enter initial value 1" << endl;
+	cin >> x0;
+	cout << "Enter initial value 2" << endl;
+	cin >> x1;
+	cout << "Enter tolerance" << endl;
+	cin >> tol;
+	cout << "Enter maximum number of iterations" << endl;
+	cin >> niter;
+	fx0 = f(x0);
+	fx1 = f(x1);
+	if(fx0 == 0){
+		cout << x0 << " is a root" << endl;
+	}else if(fx1 == 0){
+		cout << x1 << " is a root" << endl;
+	}else if(niter <= 0){
+		cout << "Cannot continue because maximum number of iterations is incorrect" << endl;
+	}else if(tol < 0){
+		cout << "Invalid tolerance" << endl;
+	}else{
+		error = tol + 1;
+		cont = 0;
+		den = fx1 - fx0;
+		while(fx1 != 0 && error > tol && den != 0 && cont < niter){
+			x2 = x1 - (fx1*(x1 - x0))/den;
+			cout << x2 << endl;
+			error = abs(x2 - x1);
+			x0 = x1;
+			x1 = x2;
+			fx1 = f(x1);
+			fx0 = f(x0);
+			den = fx1 - fx0;
+			cont++;
+		}
+		if(fx1 == 0){
+			cout << x0 << " is a root" << endl;
+		}else if(error < tol){
+			cout << x0 << " is near a root" << endl;
+		}else if(den == 0){
+			cout << x0 << " can be a multiple root" << endl;
+		}else{
+			cout << "Sorry, it failed" << endl;
+		}
+	}
+}
+
+void multipleRoots(){
+
+}
+
 int main(){
 	while(cin){
 		int methodNumber;
@@ -214,7 +312,10 @@ int main(){
 			  << "2 ---- Bisection \n"
 			  << "3 ---- False Rule \n"
 			  << "4 ---- Fixed Point \n"
-			  << "5 ---- Exit"
+			  << "5 ---- Newton \n"
+			  << "6 ---- Secant \n"
+			  << "7 ---- Multiple roots \n"
+			  << "8 ---- Exit"
 			  << endl;
 		cin >> methodNumber;
 		switch(methodNumber){
@@ -231,6 +332,15 @@ int main(){
 				fixedPoint();
 				break;
 			case 5:
+				newton();
+				break;
+			case 6:
+				secant();
+				break;
+			case 7:
+				multipleRoots();
+				break;
+			case 8:
 				return 0;
 			default:
 				cout << "Sorry, wrong number" << endl;

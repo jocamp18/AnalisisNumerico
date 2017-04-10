@@ -10,6 +10,9 @@
 using namespace std;
 double** matrixD = new double*[N];
 double** matrixU = new double*[N];
+vector<double> vectorB;
+vector<double> vectorX;
+double** matrix = new double*[N];
 
 vector<double> multiplyMatrixVector(double** matrix, vector<double> vectorB){
 	vector<double> result;
@@ -84,11 +87,24 @@ vector<double> sumVectors(vector<double> vector1, vector<double> vector2){
 	return result;
 }
 
+void generate(){
+	double tmp = 0.1;
+	for(int i = 0; i < N; i++){
+		for(int j = 0; j < N; j++){
+			if(i != j){
+				matrix[i][j] = 0.1 + tmp;//(rand() % 100 + 1)/matrix[i][i];
+			}else{
+				matrix[i][j] = 500000 + tmp;//(rand() % 100 + 1);
+			}
+			tmp += 0.1;
+		}
+		vectorX.push_back(0);
+		vectorB.push_back(rand() % 10 + 1);
+	}
+}
+
 int main(int argc, char** argv){
-	double** matrix = new double*[N];
 	double** matrixAux = new double*[N];
-	vector<double> vectorB;
-	vector<double> vectorX;
 
    	for(int i = 0; i < N; i++){
     	matrix[i] = new double[N];
@@ -98,47 +114,6 @@ int main(int argc, char** argv){
     	vectorX.push_back(0);
     }
 
-    //matrix[N][N] = {{8,-1,7},{-2,3,1},{0,1,9}};
-    /*matrix[0][0]=8;
-    matrix[0][1]=-1;
-    matrix[0][2]=7;
-    matrix[1][0]=-2;
-    matrix[1][1]=3;
-    matrix[1][2]=1;
-    matrix[2][0]=0;
-    matrix[2][1]=1;
-    matrix[2][2]=9;
-    vectorB.push_back(4);
-    vectorB.push_back(0);
-    vectorB.push_back(1);
-    vectorX.push_back(1);
-    vectorX.push_back(1);
-    vectorX.push_back(1);*/
-
-
-    /*matrix[0][0]=3;
-    matrix[0][1]=-1;
-    matrix[0][2]=-1;
-    matrix[1][0]=-1;
-    matrix[1][1]=3;
-    matrix[1][2]=1;
-    matrix[2][0]=2;
-    matrix[2][1]=1;
-    matrix[2][2]=4;
-    vectorB.push_back(1);
-    vectorB.push_back(3);
-    vectorB.push_back(7);
-    vectorX.push_back(0);
-    vectorX.push_back(0);
-    vectorX.push_back(0);*/
-    /*matrix[0][0]=2;
-    matrix[0][1]=3;
-    matrix[1][0]=3;
-    matrix[1][1]=4;
-    vectorB.push_back(-1);
-    vectorB.push_back(0);
-    vectorX.push_back(0);
-    vectorX.push_back(0);*/
 	/*for(int i = 0; i < N; i++){
 		for(int j = 0; j < N; j++){
 			matrix[i][j] = rand() % 10 + 1;
@@ -147,13 +122,15 @@ int main(int argc, char** argv){
 		vectorB.push_back(rand() % 10 + 1);
 	}*/
 
-    ifstream f("matrix.csv");
+
+
+    ifstream f("matrixA.txt");
     for (int i = 0; i < N; i++){
 		for (int j = 0; j < N; j++){
 			f >> matrix[i][j];
 		}
     }
-    ifstream fin("b.csv");
+    ifstream fin("vectorB.txt");
     double x;
     for(int i = 0; i < N; i ++){
     	fin >> x;
@@ -162,8 +139,6 @@ int main(int argc, char** argv){
     //cout << "initial matrtix" << endl;
     //printMatrix(matrix);
 	getDandU(matrix);
-	cout << matrix[0][0] << endl;
-	cout << matrix[999][999] << endl;
 	getInverse();
 	vector<double> sol;
 	clock_t begin = clock();
